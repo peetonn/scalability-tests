@@ -1,0 +1,138 @@
+version: '2'
+services:
+  consumer1:
+    build: 
+      context: client
+      dockerfile: Dockerfile-consumer
+    container_name: client2
+    command: ["/root/headless/runtest.sh", "client2", "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
+    depends_on:
+     - hub
+     - producer
+    networks:
+     - local-testbed
+  consumer2:
+    build: 
+      context: client
+      dockerfile: Dockerfile-consumer
+    container_name: client3
+    command: ["/root/headless/runtest.sh", "client3", "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
+    depends_on:
+     - hub
+     - producer
+    networks:
+     - local-testbed
+  consumer3:
+    build: 
+      context: client
+      dockerfile: Dockerfile-consumer
+    container_name: client4
+    command: ["/root/headless/runtest.sh", "client4", "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
+    depends_on:
+     - hub
+     - producer
+    networks:
+     - local-testbed
+  consumer4:
+    build: 
+      context: client
+      dockerfile: Dockerfile-consumer
+    container_name: client5
+    command: ["/root/headless/runtest.sh", "client5", "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
+    depends_on:
+     - hub
+     - producer
+    networks:
+     - local-testbed
+  consumer5:
+    build: 
+      context: client
+      dockerfile: Dockerfile-consumer
+    container_name: client6
+    command: ["/root/headless/runtest.sh", "client6", "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
+    depends_on:
+     - hub
+     - producer
+    networks:
+     - local-testbed
+  consumer6:
+    build: 
+      context: client
+      dockerfile: Dockerfile-consumer
+    container_name: client7
+    command: ["/root/headless/runtest.sh", "client7", "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
+    depends_on:
+     - hub
+     - producer
+    networks:
+     - local-testbed
+  consumer7:
+    build: 
+      context: client
+      dockerfile: Dockerfile-consumer
+    container_name: client8
+    command: ["/root/headless/runtest.sh", "client8", "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
+    depends_on:
+     - hub
+     - producer
+    networks:
+     - local-testbed
+  consumer8:
+    build: 
+      context: client
+      dockerfile: Dockerfile-consumer
+    container_name: client9
+    command: ["/root/headless/runtest.sh", "client9", "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
+    depends_on:
+     - hub
+     - producer
+    networks:
+     - local-testbed
+  consumer9:
+    build: 
+      context: client
+      dockerfile: Dockerfile-consumer
+    container_name: client10
+    command: ["/root/headless/runtest.sh", "client10", "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
+    depends_on:
+     - hub
+     - producer
+    networks:
+     - local-testbed
+  consumer10:
+    build: 
+      context: client
+      dockerfile: Dockerfile-consumer
+    container_name: client11
+    command: ["/root/headless/runtest.sh", "client11", "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
+    depends_on:
+     - hub
+     - producer
+    networks:
+     - local-testbed
+  producer:
+    build: 
+      context: client
+      dockerfile: Dockerfile-producer
+    container_name: client1
+    command: ["/root/headless/runtest.sh", "client1", "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
+    depends_on:
+     - hub
+    networks:
+     - local-testbed
+  hub:
+    build: hub
+    container_name: hub
+    command: ["/root/headless/runtest.sh", "hub", "10", $RUNTIME, $TAGS]
+    networks:
+     - local-testbed
+networks:
+  default:
+    ipam:
+      config:
+       - subnet: 10.10.11.0/24
+  local-testbed:
+    driver: overlay
+    ipam:
+      config:
+       - subnet: 10.10.12.0/24
