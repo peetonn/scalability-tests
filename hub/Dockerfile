@@ -1,4 +1,4 @@
-FROM peetonn/docker-ndnrtc-ubuntu14.04:patched-strategy
+FROM peetonn/docker-ndnrtc-ubuntu14.04:latest
 MAINTAINER Peter Gusev
 
 ADD runtest.sh /root/headless/

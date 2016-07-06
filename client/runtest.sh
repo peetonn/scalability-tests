@@ -10,7 +10,7 @@ TAGS=$5
 STATPATH="/tmp"
 HOST=ec2-52-90-158-238.compute-1.amazonaws.com
 DASHBOARD_URL="http://ec2-52-90-158-238.compute-1.amazonaws.com:3000/dashboard/db/ndn-rtc-test-metrics"
-CAPTURED_METRICS="jitterPlay,jitterEst,jitterTar,dArr,framesAcq,lambdaD,drdEst,drdPrime,rebuf,rawBytesRcvd,latEst,framesReq,framesPlayed,framesInc,skipBadGop,isent,segNumRcvd,timeouts,rtxNum"
+CAPTURED_METRICS="jitterPlay,jitterEst,jitterTar,dArr,framesAcq,framesResc,framesRec,framesDrop,skipNoKey,skipInc,skipBadGop,lambdaD,drdEst,drdPrime,rebuf,rawBytesRcvd,latEst,framesReq,framesPlayed,framesInc,skipBadGop,isent,segNumRcvd,timeouts,rtxNum"
 
 if [ "$#" -ne 5 ]; then
     echo "    Usage: $0 <consumer_name> <hub_name> <config_file> <run_time> <tags>"
@@ -26,10 +26,10 @@ START=$(date +%s%N | cut -b1-13)
 rm -f /run/nfd.sock
 nfd-start && sleep 3 && nfd-status && nfdc register / udp://$HUB
 
-cmd="ingest.py --username=$ME --stat-folder=$STATPATH --influx-adaptor --host=$HOST --tags=$TAGS --iuser=ingest --ipassword=1ng3st --metrics=$CAPTURED_METRICS"
+cmd="ingest.py --iface=eth0 --username=$ME --stat-folder=$STATPATH --influx-adaptor --host=$HOST --tags=$TAGS --iuser=ingest --ipassword=1ng3st --metrics=$CAPTURED_METRICS"
 echo "invoking ingest script: $cmd"
 
-ingest.py --username=$ME --stat-folder=$STATPATH --influx-adaptor --host=$HOST --tags=$TAGS --iuser=ingest --ipassword=1ng3st --metrics=$CAPTURED_METRICS &
+ingest.py --iface=eth0 --username=$ME --stat-folder=$STATPATH --influx-adaptor --host=$HOST --tags=$TAGS --iuser=ingest --ipassword=1ng3st --metrics=$CAPTURED_METRICS &
 
 
 ndnrtc-client -c $CONFIG -t $TIME

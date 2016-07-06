@@ -24,11 +24,12 @@ while [ $COUNTER -le $NCLIENTS ]; do
 	let COUNTER=COUNTER+1
 done
 
-ingest.py --username=$ME --no-ndncon --influx-adaptor --host=$HOST --tags=$TAGS --iuser=ingest --ipassword=1ng3st &
+ingest.py --iface=eth0 --username=$ME --no-ndncon --influx-adaptor --host=$HOST --tags=$TAGS --iuser=ingest --ipassword=1ng3st &
 
 echo "sleep for $TIME seconds..."
 sleep $TIME
 echo "shut down $ME"
 
+# tcpdumping: tcpdump -ni eth0 -s0 -w /var/tmp/capture.pcap
 # nfd-status -fr > /tmp/$ME-nfd-status
 # sleep 9000
