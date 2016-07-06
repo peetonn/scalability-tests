@@ -10,8 +10,8 @@ CONSUMER_BLOCK='  CONSUMERID:
     command: ["/root/headless/runtest.sh", CLIENTNAME, "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
     container_name: CLIENTNAME
     depends_on:
-     - hub
-     - producer
+     - HUBID
+     - PRODUCERID
     networks:
      - local-testbed'
 
@@ -22,14 +22,14 @@ PRODUCER_BLOCK='  PRODUCERID:
     container_name: CLIENTNAME
     command: ["/root/headless/runtest.sh", CLIENTNAME, "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
     depends_on:
-     - hub
+     - HUBID
     networks:
      - local-testbed'
 
 HUB_BLOCK='  HUBID:
     build: hub
     container_name: HUBID
-    command: ["/root/headless/runtest.sh", HUBID, NCLIENTS, $RUNTIME, $TAGS]
+    command: ["/root/headless/runtest.sh", HUBID, "NCLIENTS", $RUNTIME, $TAGS]
     networks:
      - local-testbed'
 
@@ -57,19 +57,25 @@ function printFormatted {
 
 function printConsumers {
 	nclients=$1
+  producerid=$2
+  hubid=$3
 	for i in `seq 2 $nclients`; do
 		let ci=i-1
 		str=${CONSUMER_BLOCK//CLIENTNAME/client${i}}
 		str=${str//CONSUMERID/consumer${ci}}
+    str=${str//HUBID/$hubid}
+    str=${str//PRODUCERID/$producerid}
 		printFormatted "$str"
 	done;
 }
 
 function printProducers {
 	nproducers=$1
+  hubid=$2
 	for i in `seq 1 $nproducers`; do
 		str=${PRODUCER_BLOCK//CLIENTNAME/client${i}}
 		str=${str//PRODUCERID/producer${i}}
+    str=${str//HUBID/$hubid}
 		printFormatted "$str"
 	done;
 }
@@ -95,7 +101,7 @@ let NCLIENTS=NCONSUMERS+1
 # echo "generating docker-compose.yml for ${NCONSUMERS} consumers..."
 
 printFormatted "$HEADER_BLOCK"
-printConsumers $NCLIENTS
-printProducers 1
+printConsumers $NCLIENTS hub1 producer1
+printProducers 1 hub1
 printHubs 1 $NCLIENTS
 printFormatted "$FOOTER_BLOCK"
