@@ -15,7 +15,8 @@ let() {
 echo "Hub $ME starts. Connects to ${NCLIENTS} clients"
 
 rm -f /run/nfd.sock
-nfd-start && sleep 3 && nfd-status
+# sleep for 15 seconds - allow for other containers to be configured
+nfd-start && sleep 15 && nfd-status
 
 COUNTER=1
 while [ $COUNTER -le $NCLIENTS ]; do

@@ -7,7 +7,7 @@ CONSUMER_BLOCK='  CONSUMERID:
     build:
       context: client
       dockerfile: Dockerfile-consumer
-    command: ["/root/headless/runtest.sh", CLIENTNAME, "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
+    command: ["/root/headless/runtest.sh", CLIENTNAME, HUBID, "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
     container_name: CLIENTNAME
     depends_on:
      - HUBID
@@ -20,7 +20,7 @@ PRODUCER_BLOCK='  PRODUCERID:
       context: client
       dockerfile: Dockerfile-producer
     container_name: CLIENTNAME
-    command: ["/root/headless/runtest.sh", CLIENTNAME, "hub", "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
+    command: ["/root/headless/runtest.sh", CLIENTNAME, HUBID, "/root/headless/config/test.cfg", $RUNTIME, $TAGS]
     depends_on:
      - HUBID
     networks:
@@ -57,8 +57,8 @@ function printFormatted {
 
 function printConsumers {
 	nclients=$1
-  producerid=$2
-  hubid=$3
+  hubid=$2
+  producerid=$3
 	for i in `seq 2 $nclients`; do
 		let ci=i-1
 		str=${CONSUMER_BLOCK//CLIENTNAME/client${i}}
