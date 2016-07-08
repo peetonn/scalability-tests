@@ -35,7 +35,8 @@ cmd="ingest.py --iface=eth0 --username=$ME --stat-folder=$STATPATH --influx-adap
 echo "invoking ingest script: $cmd"
 
 TAGS="$TAGS,cluster=$CLUSTER"
-ingest.py --iface=eth0 --username=$ME --stat-folder=$STATPATH --influx-adaptor --host=$HOST --tags=$TAGS --iuser=ingest --ipassword=1ng3st --metrics=$CAPTURED_METRICS &
+FIELDS="cluster=$CLUSTER,client=$ME"
+ingest.py --iface=eth0 --username=$ME --stat-folder=$STATPATH --influx-adaptor --host=$HOST --tags=$TAGS --fields=$FIELDS --iuser=ingest --ipassword=1ng3st --metrics=$CAPTURED_METRICS &
 
 
 ndnrtc-client -c $CONFIG -t $TIME

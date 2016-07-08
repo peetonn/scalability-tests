@@ -27,8 +27,8 @@ digraph finite_state_machine {
 		// the label for consumer cluster should follow format:
 		// 		Cx<number of consumers> <- <producer id> [<producer id>, ...]
 		node [shape = circle, peripheries=3, color = brown, width=1];
-		C1 [label = "Cx5 <- P1"]
-		C2 [label = "Cx5 <- P1 P2"]
+		C1 [label = "C1x5 <- P1"]
+		C2 [label = "C2x5 <- P1 P2"]
 
 		C1 -> H2 
 		C2 -> H1 

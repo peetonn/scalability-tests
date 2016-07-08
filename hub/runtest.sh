@@ -31,7 +31,7 @@ for client in $CLIENTS; do
 done;
 
 nfd-status
-ingest.py --iface=eth0 --username=$ME --no-ndncon --influx-adaptor --host=$HOST --tags=$TAGS --iuser=ingest --ipassword=1ng3st &
+ingest.py --iface=eth0 --username=$ME --no-ndncon --influx-adaptor --host=$HOST --tags=$TAGS --fields=hub=$ME --iuser=ingest --ipassword=1ng3st &
 
 echo "sleep for $TIME seconds..."
 sleep $TIME

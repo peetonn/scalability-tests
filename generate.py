@@ -33,7 +33,7 @@ def loadBaseYml():
 	return yml
 
 def parseConsumerLabel(label):
-	p = re.compile('Cx(?P<cluster_size>\d+)\s*<-\s*(?P<fetch_from>(P\d+\s*)+)')
+	p = re.compile('C\d+x(?P<cluster_size>\d+)\s*<-\s*(?P<fetch_from>(P\d+\s*)+)')
 	m = p.match(label)
 	if m:
 		clusterSize = int(m.group('cluster_size'))
