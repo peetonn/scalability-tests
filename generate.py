@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# run as:
+# ./generate.py -f topology.dot -p client/producer/test.cfg -c client/consumer/test.cfg 
 
 import sys
 import os
@@ -198,7 +200,7 @@ def producerCmd(serviceName, hub):
 	node = getGraphNodeByServiceName(serviceName)
 	if node:
 		cluster = 'p'+str(node['index'])
-		return '["/root/headless/runtest.sh",'+serviceName+','+hub+','+cluster+',$RUNTIME,$TAGS]'
+		return "/root/headless/runtest.sh "+serviceName+" "+hub+" "+cluster+" $RUNTIME $TAGS"
 	return None
 
 def generateProducers(yml, graph, config, pdir):
@@ -221,7 +223,7 @@ def generateProducers(yml, graph, config, pdir):
 			yml['services'][node['service']] = producerYml
 
 def hubCmd(serviceName, connected):
-	return '["/root/headless/runtest.sh",'+serviceName+',"'+" ".join(connected)+'",$RUNTIME,$TAGS]'
+	return "/root/headless/runtest.sh "+serviceName+' "'+" ".join(connected)+'" $RUNTIME $TAGS'
 
 def generateHubs(yml, graph, pdir):
 	global graphNodes
@@ -239,7 +241,7 @@ def generateHubs(yml, graph, pdir):
 		yml['services'][node['service']] = hubYml
 
 def consumerCmd(serviceName, cluster, hubs):
-	return '["/root/headless/runtest.sh",'+serviceName+',"'+" ".join(hubs)+'","'+cluster+'",$RUNTIME,$TAGS]'
+	return "/root/headless/runtest.sh "+serviceName+' "'+" ".join(hubs)+'" "'+cluster+'" $RUNTIME $TAGS'
 
 def generateConsumers(yml, graph, config, pdir):
 	global graphNodes
@@ -284,7 +286,6 @@ def generate(dotFile, producerConf, consumerConf):
 	generateConsumers(yml, toplogy.subgraph(name='consumers'), ccfg, pdir)
 	shutil.copyfile('run-compose.sh', os.path.join(pdir, 'run-compose.sh'))
 	saveYml(pdir, yml)
-	# print yaml.dump(yml, default_flow_style=False)
 
 def main():
 	try:

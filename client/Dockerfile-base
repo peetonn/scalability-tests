@@ -4,5 +4,5 @@ MAINTAINER Peter Gusev
 ADD runtest.sh /root/headless/
 RUN chmod +x /root/headless/runtest.sh
 
-ADD test.cfg
+ADD test.cfg /root/headless/config
 CMD ["/root/headless/runtest.sh", "client2", "hub", "/root/headless/config/test.cfg", "300", "test=test0"]

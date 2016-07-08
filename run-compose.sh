@@ -5,7 +5,7 @@ DASHBOARD_URL="http://ec2-52-90-158-238.compute-1.amazonaws.com:3000/dashboard/d
 
 # COMPOSE_UP_CMD="docker-compose -f docker-compose20.yml up -d --force-recreate --build"
 # COMPOSE_DOWN_CMD="docker-compose -f docker-compose20.yml down"
-COMPOSE_UP_CMD="docker-compose up -d" 
+COMPOSE_UP_CMD="docker-compose up -d --force-recreate" 
 # --force-recreate --build"
 COMPOSE_DOWN_CMD="docker-compose down"
 
