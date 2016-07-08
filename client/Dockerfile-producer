@@ -1,8 +1,0 @@
-FROM peetonn/docker-ndnrtc-ubuntu14.04:latest
-MAINTAINER Peter Gusev
-
-ADD runtest.sh /root/headless/
-RUN chmod +x /root/headless/runtest.sh
-ADD producer/test.cfg /root/headless/config
-
-CMD ["/root/headless/runtest.sh", "client2", "hub", "/root/headless/config/test.cfg", "300", "test=test0"]
