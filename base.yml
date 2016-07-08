@@ -1,0 +1,11 @@
+version: '2'
+networks:
+  default:
+    ipam:
+      config:
+       - subnet: 10.10.11.0/24
+  local-testbed:
+    driver: overlay
+    ipam:
+      config:
+       - subnet: 10.10.12.0/24

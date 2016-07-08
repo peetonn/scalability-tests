@@ -2,7 +2,7 @@
 # runas: docker exec client2 /root/headless/runtest.sh client2 client1 /root/headless/config/test.cfg 30 /tmp
 
 ME=$1
-NCLIENTS=$2
+CLIENTS=$2
 TIME=$3
 TAGS=$4
 
@@ -16,15 +16,21 @@ echo "Hub $ME starts. Connects to ${NCLIENTS} clients"
 
 rm -f /run/nfd.sock
 # sleep for 15 seconds - allow for other containers to be configured
-nfd-start && sleep 15 && nfd-status
+nfd-start && sleep 15
 
-COUNTER=1
-while [ $COUNTER -le $NCLIENTS ]; do
-	echo "register prefix towards client${COUNTER}..."
-	nfdc register /ndn/edu/ucla/remap/ndnrtc/user/client${COUNTER} udp://client${COUNTER} || true
-	let COUNTER=COUNTER+1
-done
+BASE_PREFIX="/ndn/edu/ucla/remap/ndnrtc/user"
 
+for client in $CLIENTS; do
+	if [[ $client == *"producer"* ]]; then
+		echo "register ${BASE_PREFIX}/$client ==> "$client
+		nfdc register "${BASE_PREFIX}/$client" udp://$client || true
+	else
+		echo "register ${BASE_PREFIX} ==> "$client
+		nfdc register "${BASE_PREFIX}" udp://$client
+	fi
+done;
+
+nfd-status
 ingest.py --iface=eth0 --username=$ME --no-ndncon --influx-adaptor --host=$HOST --tags=$TAGS --iuser=ingest --ipassword=1ng3st &
 
 echo "sleep for $TIME seconds..."

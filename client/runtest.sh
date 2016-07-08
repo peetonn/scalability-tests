@@ -2,11 +2,12 @@
 # runas: docker exec client2 /root/headless/runtest.sh client2 client1 /root/headless/config/test.cfg 30 /tmp
 
 ME=$1
-HUB=$2
-CONFIG=$3
+HUBS=$2
+CLUSTER=$3
 TIME=$4
 TAGS=$5
 
+CONFIG="/root/headless/config/test.cfg"
 STATPATH="/tmp"
 HOST=ec2-52-90-158-238.compute-1.amazonaws.com
 DASHBOARD_URL="http://ec2-52-90-158-238.compute-1.amazonaws.com:3000/dashboard/db/ndn-rtc-test-metrics"
@@ -24,11 +25,16 @@ echo "Gathering statistics from $STATPATH"
 START=$(date +%s%N | cut -b1-13)
 
 rm -f /run/nfd.sock
-nfd-start && sleep 3 && nfd-status && nfdc register / udp://$HUB
+nfd-start && sleep 3 && nfd-status 
+
+for hub in $HUBS; do
+	nfdc register / udp://$hub
+done
 
 cmd="ingest.py --iface=eth0 --username=$ME --stat-folder=$STATPATH --influx-adaptor --host=$HOST --tags=$TAGS --iuser=ingest --ipassword=1ng3st --metrics=$CAPTURED_METRICS"
 echo "invoking ingest script: $cmd"
 
+TAGS="$TAGS,cluster=$CLUSTER"
 ingest.py --iface=eth0 --username=$ME --stat-folder=$STATPATH --influx-adaptor --host=$HOST --tags=$TAGS --iuser=ingest --ipassword=1ng3st --metrics=$CAPTURED_METRICS &
 
 
