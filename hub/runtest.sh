@@ -18,7 +18,7 @@ rm -f /run/nfd.sock
 # sleep for 15 seconds - allow for other containers to be configured
 nfd-start && sleep 15
 
-BASE_PREFIX="/ndn/edu/ucla/remap/ndnrtc/user"
+BASE_PREFIX="/ndn/edu/ucla/%40GUEST/peter%40remap.ucla.edu"
 
 for client in $CLIENTS; do
 	if [[ $client == *"producer"* ]]; then

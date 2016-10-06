@@ -1,0 +1,29 @@
+digraph finite_state_machine {
+	layout="circo"
+	edge [ arrowhead=none ];
+
+	subgraph hubs { // all hubs should be listed here
+		// hub nodes should follow format H + index 
+		rank=min
+		node [shape = square];
+		H1; 
+	}
+
+	subgraph producers { // all producers are listed here
+		// producer nodes should follow format P + index
+		node [shape = circle, color = darkgreen, rank = 2];
+		P1; 
+
+		P1 -> H1
+	}
+
+	subgraph consumers { // all consumer clusters are lister here
+		// consumer cluster nodes should follow format C + index
+		// the label for consumer cluster should follow format:
+		// 		Cx<number of consumers> <- <producer id> [<producer id>, ...]
+		node [shape = circle, peripheries=3, color = brown, width=1];
+		C1 [label = "C1x30 <- P1"]
+
+		C1 -> H1 
+	}
+}

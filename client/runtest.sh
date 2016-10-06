@@ -38,8 +38,7 @@ TAGS="$TAGS,cluster=$CLUSTER"
 FIELDS="cluster=$CLUSTER,client=$ME"
 ingest.py --iface=eth0 --username=$ME --stat-folder=$STATPATH --influx-adaptor --host=$HOST --tags=$TAGS --fields=$FIELDS --iuser=ingest --ipassword=1ng3st --metrics=$CAPTURED_METRICS &
 
-
-ndnrtc-client -c $CONFIG -t $TIME
+ndnrtc-client -c $CONFIG -t $TIME -i $ME -s /ndn/edu/ucla/%40GUEST/peter%40remap.ucla.edu -p /root/headless/config/rule.conf
 killall "python"
 nfd-stop
 # nfd-status -f | grep udp4://10.10.12.2:6363 > /tmp/$ME-nfd-status

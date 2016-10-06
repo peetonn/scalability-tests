@@ -142,10 +142,10 @@ def makeHubContext(pdir):
 
 def updateProducerCfg(config, node):
 	try:
-		basePrefix = config.produce.basic.prefix
-		config.produce.basic.username = node['service']
-		for stream in config.produce.streams:
-			stream.session_prefix = basePrefix+'/ndnrtc/user/'+node['service']
+		# basePrefix = config.produce.basic.prefix
+		# config.produce.basic.username = node['service']
+		# for stream in config.produce.streams:
+		# 	stream.session_prefix = basePrefix+'/ndnrtc/user/'+node['service']
 		return config
 	except Exception as e:
 		print "error while reading config file for "+node['service']+": "+str(e)
@@ -153,23 +153,10 @@ def updateProducerCfg(config, node):
 def updateConsumerCfg(config, node):
 	global graphNodes
 	fetchFrom = node['nodes'][0]['fetch_from']
-	stream = copy.copy(config.consume.streams[0])
-	thread = copy.copy(stream.threads[0])
-	while len(config.consume.streams): del config.consume.streams[0]
 	for p in fetchFrom:
-		pcfg = loadConf(graphNodes[p]['config'])
-		for s in pcfg.produce.streams:
-			consumeStream = copy.copy(stream)
-			while len(consumeStream.threads): del consumeStream.threads[0]
-			consumeStream.session_prefix = s.session_prefix
-			consumeStream.name = s.name
-			consumeStream.thread_to_fetch = s.threads[0].name
-			for t in s.threads:
-				consumeThread = copy.copy(thread)
-				consumeThread.name = t.name
-				consumeThread.coder = t.coder
-				consumeStream.threads.append(consumeThread)
-			config.consume.streams.append(consumeStream)
+		for s in config.consume.streams:
+			rootPrefix = '/'.join(s.base_prefix.split('/')[0:-1])
+			s.base_prefix = '/'.join([rootPrefix, graphNodes[p]['service']])
 	return config
 
 def updateCfg(cfg, type, node, outfile):
